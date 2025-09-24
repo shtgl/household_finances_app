@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Management - OTP Verification</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #E8F4FD 0%, #F0F9FF 100%); min-height: 100vh;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="min-height: 100vh; background: linear-gradient(135deg, #E8F4FD 0%, #F0F9FF 100%);">
+        <tr>
+            <td align="center" valign="middle" style="padding: 40px 20px;">
+                <div style="background: white; border-radius: 20px; box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1); max-width: 600px; width: 100%; overflow: hidden; border: 1px solid #E0F2FE;">
+                    <!-- Header -->
+                    <div style="background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%); padding: 40px 30px; text-align: center;">
+                        <div style="background: white; display: inline-block; padding: 15px; border-radius: 50%; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(255,255,255,0.2);">
+                            <span style="font-size: 40px;">💳</span>
+                        </div>
+                        <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 700;">{{ app_name }}</h1>
+                        <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 16px;">Secure Verification Required</p>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div style="padding: 40px 30px;">
+                        <h2 style="color: #1E293B; text-align: center; margin: 0 0 20px 0; font-size: 24px;">Your Verification Code</h2>
+                        
+                        <p style="color: #64748B; text-align: center; margin: 0 0 30px 0; font-size: 16px; line-height: 1.5;">
+                            {{ greeting_message }}
+                        </p>
+                        
+                        <!-- OTP Display -->
+                        <div style="text-align: center; margin: 40px 0;">
+                            <div style="background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%); border: 2px solid #0EA5E9; border-radius: 15px; padding: 30px; display: inline-block;">
+                                <!-- Copyable OTP - Single Click Copy -->
+                                <div style="text-align: center; background: white; border-radius: 8px; padding: 20px; border: 1px solid #E0F2FE;">
+                                    <span style="color: #64748B; font-size: 14px; display: block; margin-bottom: 10px;">Click to copy:</span>
+                                    <div onclick="copyToClipboard('{{ otp_code }}')" style="color: #1E293B; font-size: 28px; font-weight: 600; font-family: 'Courier New', monospace; cursor: pointer; padding: 10px; border-radius: 6px; transition: all 0.2s; background: #F8FAFC;" onmouseover="this.style.background='#E2E8F0'" onmouseout="this.style.background='#F8FAFC'">
+                                        {{ otp_code }}
+                                    </div>
+                                    <span style="color: #64748B; font-size: 12px; margin-top: 8px; display: block;">One click to copy!</span>
+                                </div>
+                                <div style="margin-top: 15px; text-align: center;">
+                                    <div style="display: inline-flex; align-items: center; justify-content: center; gap: 10px;">
+                                        <span style="color: #10B981; font-size: 20px; font-weight: 600; line-height: 1;">₹</span>
+                                        <span style="color: #64748B; font-size: 14px; line-height: 1;">{{ tagline }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <script>
+                        function copyToClipboard(text) {
+                            // Modern approach
+                            if (navigator.clipboard && window.isSecureContext) {
+                                navigator.clipboard.writeText(text).then(() => {
+                                    showCopyFeedback();
+                                }).catch(() => {
+                                    fallbackCopyTextToClipboard(text);
+                                });
+                            } else {
+                                // Fallback for older browsers or non-HTTPS
+                                fallbackCopyTextToClipboard(text);
+                            }
+                        }
+                        
+                        function fallbackCopyTextToClipboard(text) {
+                            var textArea = document.createElement("textarea");
+                            textArea.value = text;
+                            textArea.style.position = "fixed";
+                            textArea.style.left = "-999999px";
+                            textArea.style.top = "-999999px";
+                            document.body.appendChild(textArea);
+                            textArea.focus();
+                            textArea.select();
+                            
+                            try {
+                                document.execCommand('copy');
+                                showCopyFeedback();
+                            } catch (err) {
+                                console.error('Could not copy text: ', err);
+                            }
+                            
+                            document.body.removeChild(textArea);
+                        }
+                        
+                        function showCopyFeedback() {
+                            // Find the OTP element and show feedback
+                            var otpElement = document.querySelector('[onclick*="copyToClipboard"]');
+                            if (otpElement) {
+                                var originalText = otpElement.innerHTML;
+                                otpElement.innerHTML = '✅ Copied!';
+                                otpElement.style.background = '#DCFCE7';
+                                otpElement.style.color = '#166534';
+                                
+                                setTimeout(function() {
+                                    otpElement.innerHTML = originalText;
+                                    otpElement.style.background = '#F8FAFC';
+                                    otpElement.style.color = '#1E293B';
+                                }, 2000);
+                            }
+                        }
+                        </script>
+                        
+                        <!-- Warning Box -->
+                        <div style="background: #FEF3C7; border: 2px solid #FCD34D; border-radius: 10px; padding: 20px; margin: 30px 0; text-align: center;">
+                            <div style="color: #92400E; font-size: 18px; margin-bottom: 10px;">⏰</div>
+                            <p style="color: #92400E; margin: 0; font-size: 14px; font-weight: 600;">This code expires in {{ expiry_time }} minutes</p>
+                        </div>
+                        
+                        <!-- Security Tips -->
+                        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: 25px; margin: 30px 0;">
+                            <h3 style="color: #166534; margin: 0 0 15px 0; font-size: 18px; text-align: center;">🔐 Security Tips</h3>
+                            <ul style="color: #15803D; margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.6;">
+                                {% for tip in security_tips %}
+                                <li>{{ tip }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <!-- Call to Action -->
+                        <div style="text-align: center; margin: 40px 0;">
+                            <p style="color: #059669; font-size: 16px; margin: 0; font-weight: 600;">
+                                ✅ {{ call_to_action }}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div style="background: #F8FAFC; padding: 30px; text-align: center; border-top: 1px solid #E2E8F0;">
+                        <p style="color: #475569; margin: 0 0 15px 0; font-size: 16px; font-weight: 600;">{{ team_name }}</p>
+                        <p style="color: #94A3B8; margin: 0; font-size: 12px;">
+                            {{ footer_message }}
+                        </p>
+                        <div style="margin-top: 20px;">
+                            <span style="color: #059669; font-size: 14px;">{{ security_footer }}</span>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,21 @@
+2025-09-24 18:29:18,011 - INFO - Creating app
+2025-09-24 18:29:23,241 - INFO - Welcome to home page
+2025-09-24 18:29:36,583 - INFO - Starting login phase
+2025-09-24 18:29:36,907 - INFO - Sending otp 279794 to address shwatgal@gmail.com
+2025-09-24 18:29:52,327 - INFO - Starting otp validation phase
+2025-09-24 18:29:52,327 - INFO - Getting otp from user
+2025-09-24 18:29:52,347 - INFO - On Dashboard page
+2025-09-24 18:30:10,826 - INFO - Adding <Expense (transient 2332092215056)> to database
+2025-09-24 18:30:10,847 - INFO - On Dashboard page
+2025-09-24 18:30:38,228 - INFO - On Dashboard page
+2025-09-24 18:30:58,966 - INFO - Adding <Loan (transient 2332093146128)> to database
+2025-09-24 18:30:58,987 - INFO - On Dashboard page
+2025-09-24 18:31:14,331 - INFO - Logged out successfully
+2025-09-24 18:31:20,780 - INFO - Sending otp 260592 to address shwatgal@gmail.com
+2025-09-24 18:31:57,941 - INFO - Adgjl135@ Validation: done
+2025-09-24 18:32:04,742 - INFO - Starting login phase
+2025-09-24 18:32:05,055 - INFO - Sending otp 903681 to address shwatgal@gmail.com
+2025-09-24 18:32:14,522 - INFO - Starting otp validation phase
+2025-09-24 18:32:14,523 - INFO - Getting otp from user
+2025-09-24 18:32:14,538 - INFO - On Dashboard page
+2025-09-24 18:32:17,818 - INFO - Logged out successfully

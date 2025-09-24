@@ -1,0 +1,566 @@
+body {
+    min-height: 100vh;     /* grow with content */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start; /* start at top */
+    align-items: stretch;         /* let child set its own width */
+    overflow-y: auto;
+    background: linear-gradient(135deg, rgba(240, 244, 248, 0.7), rgba(217, 228, 236, 0.7)),
+                url("../rupee.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* keep background continuous while scrolling */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    /* Force scrollbar to not affect layout */
+    scrollbar-gutter: stable;
+}
+
+/* ===== NAVBAR STYLES ===== */
+.navbar {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 42%;
+    min-width: 100px;
+    max-width: 100px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.12);
+    padding: 8px 12px;
+}
+
+.logout {
+    text-decoration: none;
+    color: #29a613;
+    padding: 8px 16px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.logout:hover {
+    background: rgba(41, 166, 19, 0.1);
+    border-color: rgba(41, 166, 19, 0.3);
+    color: #22a012;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(41, 166, 19, 0.2);
+}
+
+.logout:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(41, 166, 19, 0.2);
+}
+
+/* ===== GLASS MORPHISM BUTTONS ===== */
+/* Base glass morphism button styles */
+.btn-custom,
+.btn-sm.btn-custom,
+button[data-bs-toggle="modal"] {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    position: relative;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    min-height: 38px;
+    color: #29a613;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: auto;
+    min-width: 100px;
+}
+
+/* Hover effects */
+.btn-custom:hover,
+.btn-sm.btn-custom:hover,
+button[data-bs-toggle="modal"]:hover,
+.btn[type="submit"]:hover {
+    background: rgba(41, 166, 19, 0.1);
+    border-color: rgba(41, 166, 19, 0.3);
+    color: #22a012;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(41, 166, 19, 0.2);
+}
+
+/* Active/pressed state */
+.btn-custom:active,
+.btn-sm.btn-custom:active,
+button[data-bs-toggle="modal"]:active,
+.btn[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(41, 166, 19, 0.2);
+}
+
+/* Focus state for accessibility */
+.btn-custom:focus,
+.btn-sm.btn-custom:focus,
+button[data-bs-toggle="modal"]:focus,
+.btn[type="submit"]:focus {
+    outline: none;
+    box-shadow: 
+    0 0 0 3px rgba(41, 166, 19, 0.3),
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* Small button variations */
+.btn-sm.btn-custom {
+    font-size: 13px;
+    padding: 6px 12px;
+    justify-content: center;
+    justify-content: center;
+    min-height: 32px;
+    border-radius: 8px;
+}
+
+/* Submit button specific styles */
+.btn[type="submit"] {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #29a613;
+    width: fit-content;
+    min-width: 120px;
+    padding: 8px 20px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: 600;
+}
+
+.btn[type="submit"]:hover {
+    background: rgba(41, 166, 19, 0.1);
+    border-color: rgba(41, 166, 19, 0.3);
+    color: #22a012;
+}
+
+/* Close button specific styles */
+.btn-close {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    min-height: auto;
+    color: #dc35469f;
+    transition: all 0.3s ease;
+}
+
+.btn-close:hover {
+    color: #dc3545;
+}
+
+.btn-close::before {
+    content: '×';
+    color: inherit;
+    font-size: 30px;
+    font-weight: 300;
+    line-height: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Action button group styling */
+.d-flex.gap-2 .btn-custom,
+.d-flex.gap-2 .btn-sm.btn-custom {
+    flex: 1;
+    min-width: 100px;
+    white-space: nowrap;
+}
+
+/* Form control styling to match */
+.form-control,
+.form-select {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(108, 108, 108, 0.15);
+    border-radius: 8px;
+    color: rgba(0, 0, 0, 0.9);
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(129, 159, 235, 0.925);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+    color: rgb(0, 0, 0);
+}
+
+.form-control::placeholder {
+    color: rgba(42, 42, 42, 0.6);
+}
+
+/* Modal specific button adjustments */
+.modal-content .btn-custom,
+.modal-content .btn[type="submit"] {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* Glass effect enhancement for better visibility */
+.btn-custom::before,
+.btn-sm.btn-custom::before,
+button[data-bs-toggle="modal"]::before,
+.btn[type="submit"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0.05) 100%);
+    border-radius: inherit;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Loading state (optional) */
+.btn-custom.loading,
+.btn[type="submit"].loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.btn-custom.loading::after,
+.btn[type="submit"].loading::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: rgba(255, 255, 255, 0.8);
+    animation: spin 1s ease-in-out infinite;
+    margin-left: 8px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+/* Navbar responsive */
+@media (max-width: 768px) {
+    .navbar {
+        width: 90%;
+        max-width: none;
+        top: 10px;
+    }
+    
+    .logout {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+    
+    /* Button responsive */
+    .btn-custom,
+    .btn-sm.btn-custom,
+    button[data-bs-toggle="modal"] {
+        font-size: 13px;
+        padding: 8px 12px;
+        min-height: 36px;
+    }
+    
+    .d-flex.gap-2 .btn-custom,
+    .d-flex.gap-2 .btn-sm.btn-custom {
+        min-width: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        width: 95%;
+        top: 5px;
+    }
+    
+    .logout {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    
+    /* Button responsive */
+    .btn-custom,
+    .btn-sm.btn-custom,
+    button[data-bs-toggle="modal"] {
+        font-size: 12px;
+        padding: 6px 10px;
+        min-height: 32px;
+    }
+    
+    .d-flex.gap-2 {
+        flex-direction: column;
+        gap: 8px !important;
+    }
+    
+    .d-flex.gap-2 .btn-custom,
+    .d-flex.gap-2 .btn-sm.btn-custom {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+/* Glass effect enhancement for better visibility */
+.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0.05) 100%);
+    border-radius: inherit;
+    z-index: -1;
+}
+
+
+/* Vertical stack container for dashboard only */
+/* Add top margin to main content to prevent overlap */
+.stack-v {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    align-items: center;
+    padding: 4rem 1rem 2rem 1rem;  /* Increased top padding */
+    margin-top: 40px;  /* Additional top margin for navbar space */
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 0px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;                 
+    max-width: 100%;             
+}
+
+/* Prevent titles from breaking to a new line when there is space */
+.glass-card h3 { white-space: nowrap; }
+
+/* On medium+ screens allow cards to size to content up to the cap */
+@media (min-width: 768px) {
+    .glass-card {
+        width: fit-content;
+        min-width: 40%;    
+        max-width: 1100px;
+    }
+}
+
+h2 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+p {
+    color: #555;
+    font-size: 1rem;
+}
+
+.total-row td {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.btn-group-custom {
+    margin-top: 1.5rem;   /* more margin above buttons */
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;            /* closer spacing */
+}
+
+/* Overlay styling for More Info modals */
+.glass-overlay .modal-backdrop { opacity: 0.4; }
+.overlay-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    padding: 1rem 1rem 0.75rem;
+    width: 100%;
+    max-width: 1100px; /* dynamic-ish width for large screens */
+}
+
+a {
+    color: #6c8e9b;
+    text-decoration: none;  /* 🚫 no underline */
+}
+
+a:hover {
+    color: #56707a;        /* slightly darker but still visible */
+    text-decoration: none; /* keep clean, no underline */
+}
+
+/* Hide default scrollbar completely */
+html {
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+#expenseFilters .card-body {
+  background-color: transparent !important; /* Remove Bootstrap's default background */
+  padding: 1rem; /* Optional: keep card padding */
+}
+
+
+#loanFilters .card-body {
+  background-color: transparent !important; /* Remove Bootstrap's default background */
+  padding: 1rem; /* Optional: keep card padding */
+}
+
+#insuranceFilters .card-body {
+  background-color: transparent !important; /* Remove Bootstrap's default background */
+  padding: 1rem; /* Optional: keep card padding */
+}
+
+/* Custom scrollbar container */
+.custom-scrollbar-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 100vh;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.custom-scrollbar-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.custom-scrollbar-thumb {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: rgba(108, 142, 155, 0.6);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.custom-scrollbar-thumb:hover {
+    background: rgba(108, 142, 155, 0.8);
+}
+
+/* Fix modal positioning and prevent layout shifts */
+.modal {
+    padding-right: 0 !important;
+}
+
+.modal-open {
+    overflow: hidden !important;
+    padding-right: 0 !important;
+}
+
+.modal-open .modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure glass cards stay in position */
+.glass-card {
+    position: relative;
+    z-index: 1;
+    transform: translateZ(0); /* Force hardware acceleration */
+}
+
+/* Modal overlay improvements */
+.glass-overlay .modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(2px);
+}
+
+.modal.show .modal-dialog {
+    transform: none;
+    transition: transform 0.3s ease-out;
+}
+
+/* Prevent body scrollbar from affecting layout */
+body {
+    overflow-y: auto;
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* Numeric input validation styles */
+.numeric-input {
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.numeric-input:invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.numeric-input:valid {
+    border-color: #28a745;
+}
+
+.invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+
+.numeric-input:invalid + .invalid-feedback {
+    display: block;
+}

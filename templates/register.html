@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/css/forms.css">
+
+  </head>
+  <body>
+    <div class="center-page">
+      <div class="form-card">
+        <h2 class="mb-4 text-center">Register</h2>
+        <form method="POST" novalidate>
+          <!-- First Name -->
+          <div class="mb-3 position-relative">
+            <input type="text" id="first_name" class="form-control" name="first_name" placeholder="First name" required>
+            <div id="fn-hint" class="card hint-card">
+              <strong>First name rules</strong>
+              <ul class="list-unstyled mb-0 mt-2">
+                <li data-fn-rule="notempty"><span class="rule-bullet">✖</span> Cannot be empty</li>
+                <li data-fn-rule="capital"><span class="rule-bullet">✖</span> Start with capital letter</li>
+                <li data-fn-rule="alpha"><span class="rule-bullet">✖</span> Only letters</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Last Name -->
+          <div class="mb-3 position-relative">
+            <input type="text" id="last_name" class="form-control" name="last_name" placeholder="Last name" required>
+            <div id="ln-hint" class="card hint-card">
+              <strong>Last name rules</strong>
+              <ul class="list-unstyled mb-0 mt-2">
+                <li data-ln-rule="notempty"><span class="rule-bullet">✖</span> Cannot be empty</li>
+                <li data-ln-rule="capital"><span class="rule-bullet">✖</span> Start with capital letter</li>
+                <li data-ln-rule="alpha"><span class="rule-bullet">✖</span> Only letters</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3 position-relative">
+            <input type="email" id="email" class="form-control" name="email" placeholder="Email" required>
+            <div id="email-hint" class="card hint-card">
+              <strong>Email rules</strong>
+              <ul class="list-unstyled mb-0 mt-2">
+                <li data-email-rule="notempty"><span class="rule-bullet">✖</span> Cannot be empty</li>
+                <li data-email-rule="format"><span class="rule-bullet">✖</span> Must be a valid email</li>
+                <li data-email-rule="domain"><span class="rule-bullet">✖</span> Must contain a dot in domain</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3 position-relative">
+            <div class="input-group">
+              <input type="password" id="password" class="form-control" name="password" placeholder="Password" required>
+              <button type="button" class="btn btn-outline-secondary toggle-password" data-target="password">
+                👁️
+              </button>
+            </div>
+            <div id="pw-rules" class="card hint-card">
+              <strong>Password rules</strong>
+              <ul class="list-unstyled mb-0 mt-2" id="pw-rule-list">
+                <li data-rule="length"><span class="rule-bullet">✖</span> At least 8 characters</li>
+                <li data-rule="upper"><span class="rule-bullet">✖</span> Uppercase letter</li>
+                <li data-rule="lower"><span class="rule-bullet">✖</span> Lowercase letter</li>
+                <li data-rule="digit"><span class="rule-bullet">✖</span> Digit</li>
+                <li data-rule="symbol"><span class="rule-bullet">✖</span> Symbol (e.g. !@#$%)</li>
+                <li data-rule="norepeat"><span class="rule-bullet">✖</span> No repeated characters 4+ times</li>
+                <li data-rule="noseq"><span class="rule-bullet">✖</span> No 3-char ascending/descending sequences</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="mb-3 position-relative">
+            <div class="input-group">
+              <input type="password" id="confirm_password" class="form-control" name="confirm_password" placeholder="Confirm Password" required>
+              <button type="button" class="btn btn-outline-secondary toggle-password" data-target="confirm_password">
+                👁️
+              </button>
+            </div>
+            <div id="cpw-rules" class="card hint-card">
+              <strong>Confirm Password</strong>
+              <ul class="list-unstyled mb-0 mt-2">
+                <li data-cpw-rule="match"><span class="rule-bullet">✖</span> Must match password</li>
+              </ul>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-custom w-20">Register</button>
+          <p class="text-center mt-3">
+            Already have an account? <a href="/login" class="text-decoration-underline">Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+    <script src="/static/js/forms.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        initFormHints({
+          passwords: [
+            {el: document.getElementById('password'), hint: document.getElementById('pw-rules')},
+            {el: document.getElementById('confirm_password'), hint: document.getElementById('cpw-rules'), confirm: true, original: document.getElementById('password')}
+          ],
+          names: [
+            {el: document.getElementById('first_name'), hint: document.getElementById('fn-hint'), prefix: 'fn'},
+            {el: document.getElementById('last_name'), hint: document.getElementById('ln-hint'), prefix: 'ln'}
+          ],
+          emails: [
+            {el: document.getElementById('email'), hint: document.getElementById('email-hint')}
+          ]
+        });
+      });
+
+      document.querySelectorAll('.toggle-password').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+        if (input.type === "password") {
+          input.type = "text";
+          btn.textContent = '🙈';
+        } else {
+          input.type = "password";
+          btn.textContent = '👁️';
+        }
+      });
+    });
+    </script>
+  </body>
+</html>

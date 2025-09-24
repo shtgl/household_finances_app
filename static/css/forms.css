@@ -1,0 +1,209 @@
+/* ===== HINT CARDS ===== */
+.hint-card {
+    display: none; /* hidden by default */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    padding: 1rem;
+    width: 100%;
+    max-width: 350px;
+    font-size: 0.9rem;
+}
+
+.hint-card strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.hint-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.hint-card li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.25rem;
+    color: #333;
+}
+.btn-custom,
+.btn-sm.btn-custom,
+button[data-bs-toggle="modal"] {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    position: relative;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    min-height: 38px;
+    color: #29a613;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: auto;
+    min-width: 100px;
+}
+
+/* Hover effects */
+.btn-custom:hover,
+.btn-sm.btn-custom:hover,
+button[data-bs-toggle="modal"]:hover,
+.btn[type="submit"]:hover {
+    background: rgba(41, 166, 19, 0.1);
+    border-color: rgba(41, 166, 19, 0.3);
+    color: #22a012;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(41, 166, 19, 0.2);
+}
+
+/* Active/pressed state */
+.btn-custom:active,
+.btn-sm.btn-custom:active,
+button[data-bs-toggle="modal"]:active,
+.btn[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(41, 166, 19, 0.2);
+}
+
+/* Focus state for accessibility */
+.btn-custom:focus,
+.btn-sm.btn-custom:focus,
+button[data-bs-toggle="modal"]:focus,
+.btn[type="submit"]:focus {
+    outline: none;
+    box-shadow: 
+    0 0 0 3px rgba(41, 166, 19, 0.3),
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* Small button variations */
+.btn-sm.btn-custom {
+    font-size: 13px;
+    padding: 6px 12px;
+    justify-content: center;
+    justify-content: center;
+    min-height: 32px;
+    border-radius: 8px;
+}
+
+/* Submit button specific styles */
+.btn[type="submit"] {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #29a613;
+    width: fit-content;
+    min-width: 120px;
+    padding: 8px 20px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: 600;
+}
+
+.btn[type="submit"]:hover {
+    background: rgba(41, 166, 19, 0.1);
+    border-color: rgba(41, 166, 19, 0.3);
+    color: #22a012;
+}
+
+.center-page {
+    display: flex;
+    justify-content: center;  /* horizontal center */
+    align-items: center;      /* vertical center */
+    min-height: 100vh;        /* full viewport height */
+    padding: 1rem;            /* small padding for mobile */
+    background: linear-gradient(135deg, rgba(240, 244, 248, 0.7), rgba(217, 228, 236, 0.7)),
+                url("../rupee.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.center-page .form-card {
+    width: 500px;           /* full width up to max */
+    max-width: 50%;      /* bigger card */
+    padding: 3rem 2rem;    /* more padding inside */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+.form-card{
+    backdrop-filter: blur(10px);
+    
+}
+
+.hint-card li .rule-bullet {
+    display: inline-block;
+    width: 20px;
+    font-weight: 700;
+}
+
+/* ===== INPUT HIGHLIGHTS ===== */
+input:focus + .hint-card,
+input:hover + .hint-card {
+    display: block;
+}
+
+input.valid {
+    border-color: green !important;
+}
+
+input.invalid {
+    border-color: #dc3545 !important;
+}
+
+p a {
+    color: #29a613; /* greenish link */
+}
+
+p a:hover {
+    color: #22a012;
+    text-decoration: none;
+}
+
+/* ===== PASSWORD RULES SPECIFIC ===== */
+#pw-rules li {
+    transition: color 0.2s ease;
+}
+
+#pw-rules li .rule-bullet {
+    color: #333;
+}
+
+/* ===== NAME HINTS ===== */
+#fn-hint li,
+#ln-hint li {
+    transition: color 0.2s ease;
+}
+
+/* ===== EMAIL HINTS ===== */
+#email-hint li {
+    transition: color 0.2s ease;
+}
+
+/* ===== SMALL SCREEN ADJUSTMENTS ===== */
+@media (max-width: 480px) {
+    .hint-card {
+        max-width: 100%;
+        font-size: 0.85rem;
+    }
+}
