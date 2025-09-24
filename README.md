@@ -40,7 +40,7 @@ pip install -r requirements.txt
 
 1. Install PostgreSQL from <a href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads">here</a>
 
-2. Please refer the [resource section](##Resources) for PostgreSQL setup to get the database up and ready.
+2. Please refer the [resource section](#resources) for PostgreSQL setup to get the database up and ready.
 
 3. After installation is successful, open pgAdmin 4
 
@@ -102,7 +102,7 @@ pip install -r requirements.txt
 
 16. Congratulations! You have successfully completed the setup.
 
-17. To learn more about PostgreSQL, please refer [resource section](##Resources) to get reference to learning resources. <i>Having an idea of basic queries will help understand the purpose  at various instances of the application.</i>
+17. To learn more about PostgreSQL, please refer [resource section](#resources) to get reference to learning resources. <i>Having an idea of basic queries will help understand the purpose  at various instances of the application.</i>
 
 
 ## Execute
