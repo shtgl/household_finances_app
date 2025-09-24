@@ -33,7 +33,7 @@ pip install -r requirements.txt
 
 <div>
 <h3>
-<img src="img/azure.png"; width=20> <b>PostgreSQL</b>
+<img src="img/postgres.png"; width=20> <b>PostgreSQL</b>
 </h3>
 </div>
 
