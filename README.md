@@ -75,9 +75,9 @@ pip install -r requirements.txt
 8. A window shall pop-up asking for <b><i>Database name</b></i>. Enter `finance_db`. <i>Since above app has `finance_db` database connection. </i> You may independently try changing the name of database, by updating references to finance_db in above application, with desired database name.
 
 9. In <a href="configs.py">configs.py</a> file, update the database `password` at
----bash
+```bash
 `SQLALCHEMY_DB` = `postgresql://postgres:password@localhost/finance_db
----
+```
 
 11. Create a `.env` file in <i>current directory</i>, from `env.example.txt` to save the <i>secret credentials</i> that will be created in upcoming steps.
 
