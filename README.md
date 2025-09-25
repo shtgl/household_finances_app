@@ -76,7 +76,7 @@ pip install -r requirements.txt
 
 9. In <a href="configs.py">configs.py</a> file, update the database `password` at
 ```bash
-`SQLALCHEMY_DB` = `postgresql://postgres:password@localhost/finance_db
+SQLALCHEMY_DB = `postgresql://postgres:password@localhost/finance_db
 ```
 
 11. Create a `.env` file in <i>current directory</i>, from `env.example.txt` to save the <i>secret credentials</i> that will be created in upcoming steps.
