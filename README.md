@@ -74,13 +74,16 @@ pip install -r requirements.txt
 
 8. A window shall pop-up asking for <b><i>Database name</b></i>. Enter `finance_db`. <i>Since above app has `finance_db` database connection. </i> You may independently try changing the name of database, by updating references to finance_db in above application, with desired database name.
 
-9. In <a href="configs.py">configs.py</a> file, update the database `password` at `SQLALCHEMY_DB` = `postgresql://postgres:password@localhost/finance_db` 
+9. In <a href="configs.py">configs.py</a> file, update the database `password` at
+---bash
+`SQLALCHEMY_DB` = `postgresql://postgres:password@localhost/finance_db
+---
 
-10. Create a `.env` file in <i>current directory</i>, from `env.example.txt` to save the <i>secret credentials</i> that will be created in upcoming steps.
+11. Create a `.env` file in <i>current directory</i>, from `env.example.txt` to save the <i>secret credentials</i> that will be created in upcoming steps.
 
-11. We need an endpoint for sending email based <i>otp for login verification</i> into app. We will use Google Account's App Password to authenticate ourselves, for sending verified and encrypted emails. 
+12. We need an endpoint for sending email based <i>otp for login verification</i> into app. We will use Google Account's App Password to authenticate ourselves, for sending verified and encrypted emails. 
 
-12. Navigate to <b><i>Google Accounts section</b></i>, and then choose Security tab and search for `App passwords`.
+13. Navigate to <b><i>Google Accounts section</b></i>, and then choose Security tab and search for `App passwords`.
 
 <div align='center'>
 <img src="img/pg-resource/pgPw.png"; width=920> 
