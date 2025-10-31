@@ -2,6 +2,8 @@
 
 <div align="justify">
 The project focuses on building a Finance Management application using Flask as the backend framework and PostgreSQL as the database. The application provides a web-based interface powered by HTML, CSS, and JavaScript, with Bootstrap used for responsive and structured layouts. Users can track and analyze their total expenses, manage loans, and monitor insurance premiums. Category-wise expense insights are visualized using the Plotly library, enabling interactive and intuitive data analysis. The system is designed to simplify personal finance tracking by combining robust backend logic with clean and user-friendly dashboards.
+
+App in action - <a href='https://drive.google.com/file/d/1uCKjxNIy8D13ocry9i18isB4MdqsfJzj/view?usp=sharing'>Household Finance App</a>
 </div>
 
 
