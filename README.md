@@ -15,20 +15,28 @@ App in action - <a href='https://drive.google.com/file/d/1CeNPCD8iUOdFLLiEPaRCH-
 </h3>
 
 *Note - The app is written using Python virtual environment version **3.13.5** and supports the latest Python versions. However, lower Python versions may offer more stability compared to the latest ones. Below setup will focus Windows system. And commands to setup may vary for macOS or Linux.*
-1. Create a python virtual environment using -
+1. Move to folder (CLI commands)
+```bash
+# If you downloaded the file, just navigate to folder
+# Then press Shift (in Windows) + Left Mouse click
+# Choose Open PowerShell window here option and move on to creating virtual environment
+cd household_finances_app
+```
+
+2. Create a python virtual environment using -
 ```bash
 # Path to installation of particular version of python  may vary
 # I have installed more than one version of python in pyver directory
 # Refer the resources section, for youtube video to install multiple versions of python
-C:\Users\<username>\pyver\py3135\python -m venv finenv
+C:\Users\<username>\pyver\py3121\python -m venv housevenv
 ```
 
-2. Activate the virtual environment using -
+3. Activate the virtual environment using -
 ```bash
-finenv/Scripts/activate
+housevenv\Scripts\activate
 ```
 
-3. Install python packages using - 
+4. Install python packages using - 
 ```bash
 pip install -r requirements.txt
 ```
