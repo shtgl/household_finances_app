@@ -1,652 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/main.css">
   </head>
   <body>
+
     <div class="custom-scrollbar-container">
       <div class="custom-scrollbar-track">
         <div class="custom-scrollbar-thumb" id="customScrollbarThumb"></div>
       </div>
     </div>
-    <center>
-      <div class="navbar">
-        <a class="logout" href="{{ url_for('auth.logout') }}">Logout</a>
-      </div>
-    </center>
+
+    <nav class="navbar dashboard-nav" role="navigation" aria-label="Main navigation">
+      <a class="nav-expenses" data-bs-toggle="modal" data-bs-target="#expensesModal">Expenses</a>
+      <a class="nav-loans" data-bs-toggle="modal" data-bs-target="#loansModal">Loans</a>
+      <a class="nav-insurance" data-bs-toggle="modal" data-bs-target="#insuranceModal">Insurance</a>
+      <a class="nav-logout" href="{{ url_for('auth.logout') }}">Logout</a>
+    </nav>
 
     <div class="stack-v">
       <div class="glass-card text-center">
         <h2>Hello, {{ user.first_name }} 👋</h2>
         <p>Welcome to your dashboard!</p>
-        <br><br><br>
+        <br /><br /><br />
         <h3>Overview</h3>
         <div class="row">
-              <div class="col-12 col-lg-4 mb-3">
-                  <div class="p-2">Total Expenses</div>
-                  <div class="h5">{{ '%.2f'|format(total_expenses or 0) }}</div>
-                  <canvas style="height:125px;width: 100%;"></canvas>
-              </div>
-              <div class="col-12 col-lg-4 mb-3">
-                  <div class="p-2">Total Loans</div>
-                  <div class="h5">{{ '%.2f'|format(total_loans or 0) }}</div>
-                  <canvas style="height:125px;width: 100%;"></canvas>
-              </div>
-              <div class="col-12 col-lg-4 mb-3">
-                  <div class="p-2">Monthly Premiums</div>
-                  <div class="h5" style="width:100%;">{{ '%.2f'|format(total_premium or 0) }}</div>
-                  <canvas style="height:125px;width: 100%;"></canvas>
-              </div>
-            </div>
-      </div>
-
-      <!-- Expenses Section with Integrated Filters -->
-      <div class="row mt-3">
-        <div class="col-12 mb-3">
-          <div class="glass-card flex-fill">
-            <!-- Header with title + action buttons -->
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h3 class="mb-0">Expenses Overview</h3>
-              <div class="d-flex gap-2 flex-wrap">
-                <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#expenseFilters" aria-expanded="false" aria-controls="expenseFilters">
-                  <i class="bi bi-funnel"></i> Filters
-                </button>
-                <button class="btn btn-sm btn-custom" type="button" data-bs-toggle="modal" data-bs-target="#expenseFullModal">More Info</button>
-                <button class="btn btn-sm btn-custom" type="button" data-bs-toggle="modal" data-bs-target="#expenseModal">Add Expense</button>
-              </div>
-            </div>
-
-            <!-- Collapsible Filter Section -->
-            <div class="collapse mb-3" id="expenseFilters">
-              <div class="card card-body">
-                <h6 class="mb-3">Filter Expenses</h6>
-                <form method="get" action="{{ url_for('dashboard.dashboard') }}">
-                  <div class="row">
-                    <div class="col-12 col-lg-6 mb-2">
-                      <label class="form-label"><strong>Categories:</strong></label>
-                      <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="expenseDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                          Select Categories
-                        </button>
-                        <ul class="dropdown-menu p-2" aria-labelledby="expenseDropdown" style="max-height: 200px; overflow-y: auto;">
-                          {% for category in DEFAULT_CATEGORIES %}
-                          <li>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" name="expense_category" value="{{ category }}"
-                                id="cat_{{ loop.index }}"
-                                {% if category in selected_expense_categories %}checked{% endif %}>
-                              <label class="form-check-label" for="cat_{{ loop.index }}">{{ category }}</label>
-                            </div>
-                          </li>
-                          {% endfor %}
-                        </ul>
-                      </div>
-                    </div>
-
-                    <div class="col-6 col-lg-3 mb-2">
-                      <label class="form-label"><strong>Start Date:</strong></label>
-                      <input type="date" class="form-control" name="start_date" value="{{ start_date }}">
-                    </div>
-                    <div class="col-6 col-lg-3 mb-2">
-                      <label class="form-label"><strong>End Date:</strong></label>
-                      <input type="date" class="form-control" name="end_date" value="{{ end_date }}">
-                    </div>
-                  </div>
-
-                  <!-- Preserve other filters -->
-                  {% for lender in selected_loan_lenders %}
-                    <input type="hidden" name="loan_lender" value="{{ lender }}">
-                  {% endfor %}
-                  {% for category in selected_loan_categories %}
-                    <input type="hidden" name="loan_category" value="{{ category }}">
-                  {% endfor %}
-                  {% for provider in selected_insurance_providers %}
-                    <input type="hidden" name="insurance_provider" value="{{ provider }}">
-                  {% endfor %}
-                  {% for policy in selected_insurance_types %}
-                    <input type="hidden" name="insurance_type" value="{{ policy }}">
-                  {% endfor %}
-
-                  <div class="mt-2">
-                    <button type="submit" class="btn btn-sm btn-custom">Apply</button>
-                    <a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-sm btn-secondary">Reset</a>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-12 col-lg-6 mb-3">
-                <div style="min-height: 450px;">
-                  <h5 class="mb-3">Monthly Expenses</h5>
-                  <canvas id="expenseChart" style="height:235px; width:100%; cursor:pointer;"></canvas>
-                  <button class="btn btn-sm btn-outline-primary mt-2" id="viewExpenseChartBtn">View Larger Chart</button>
-                </div>
-              </div>
-              <div class="col-12 col-lg-6 mb-3">
-                <div style="min-height: 450px;">
-                  <h5 class="mb-3">Expenses by Category</h5>
-                  <canvas id="categoryChart" style="height:128px; width:100%; cursor:pointer;"></canvas>
-                  <button class="btn btn-sm btn-outline-primary mt-2" id="viewCategoryChartBtn">View Larger Chart</button>
-                </div>
-              </div>
-            </div>
+          <div class="col-12 col-lg-4 mb-3">
+            <div class="p-2">Total Expenses</div>
+            <div class="h5">{{ '%.2f'|format(total_expenses or 0) }}</div>
+            <canvas style="height:125px;width: 100%;"></canvas>
           </div>
-        </div>
-      </div>
-
-      <!-- Loans Section with Integrated Filters -->
-      <div class="row mt-3">
-        <div class="col-12 mb-3">
-          <div class="glass-card flex-fill">
-            <!-- Header with title + buttons -->
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h3 class="mb-0">Loans Overview</h3>
-              <div class="d-flex gap-2 flex-wrap">
-                <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#loanFilters" aria-expanded="false" aria-controls="loanFilters">
-                  <i class="bi bi-funnel"></i> Filters
-                </button>
-                <button class="btn btn-sm btn-custom" type="button" data-bs-toggle="modal" data-bs-target="#loanFullModal">More Info</button>
-                <button class="btn btn-sm btn-custom" type="button" data-bs-toggle="modal" data-bs-target="#loanModal">Add Loan</button>
-              </div>
-            </div>
-
-            <!-- Collapsible Filter Section -->
-            <div class="collapse mb-3" id="loanFilters">
-              <div class="card card-body">
-                <h6 class="mb-3">Filter Loans</h6>
-                <form method="get" action="{{ url_for('dashboard.dashboard') }}">
-                  <div class="row">
-                    <div class="col-6 mb-2">
-                      <label class="form-label"><strong>Lenders:</strong></label>
-                      <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="lenderDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                          Select Lenders
-                        </button>
-                        <ul class="dropdown-menu p-2" aria-labelledby="lenderDropdown" style="max-height: 200px; overflow-y: auto;">
-                          {% for lender in lenders %}
-                          <li>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" name="loan_lender" value="{{ lender }}"
-                                id="lender_{{ loop.index }}"
-                                {% if lender in selected_loan_lenders %}checked{% endif %}>
-                              <label class="form-check-label" for="lender_{{ loop.index }}">{{ lender }}</label>
-                            </div>
-                          </li>
-                          {% endfor %}
-                        </ul>
-                      </div>
-                    </div>
-
-                    <div class="col-6 mb-2">
-                      <label class="form-label"><strong>Loan Categories:</strong></label>
-                      <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="loanCategoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                          Select Categories
-                        </button>
-                        <ul class="dropdown-menu p-2" aria-labelledby="loanCategoryDropdown" style="max-height: 200px; overflow-y: auto;">
-                          {% for lc in loan_categories %}
-                          <li>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" name="loan_category" value="{{ lc }}"
-                                id="loancat_{{ loop.index }}"
-                                {% if lc in selected_loan_categories %}checked{% endif %}>
-                              <label class="form-check-label" for="loancat_{{ loop.index }}">{{ lc }}</label>
-                            </div>
-                          </li>
-                          {% endfor %}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-6 mb-2">
-                      <label class="form-label"><strong>Start Date:</strong></label>
-                      <input type="date" class="form-control" name="start_date" value="{{ start_date }}">
-                    </div>
-                    <div class="col-6 mb-2">
-                      <label class="form-label"><strong>End Date:</strong></label>
-                      <input type="date" class="form-control" name="end_date" value="{{ end_date }}">
-                    </div>
-                  </div>
-
-                  <!-- Preserve other filters -->
-                  {% for category in selected_expense_categories %}
-                    <input type="hidden" name="expense_category" value="{{ category }}">
-                  {% endfor %}
-                  {% for provider in selected_insurance_providers %}
-                    <input type="hidden" name="insurance_provider" value="{{ provider }}">
-                  {% endfor %}
-                  {% for policy in selected_insurance_types %}
-                    <input type="hidden" name="insurance_type" value="{{ policy }}">
-                  {% endfor %}
-
-                  <div class="mt-2">
-                    <button type="submit" class="btn btn-sm btn-custom">Apply</button>
-                    <a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-sm btn-secondary">Reset</a>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            <!-- Single Large Charts -->
-            <div style="min-height: 450px;">
-              <h5 class="mb-3">Loans by Year</h5>
-              <canvas id="loanChart" style="height:400px; width:100%; cursor:pointer;"></canvas>
-              <button class="btn btn-sm btn-outline-primary mt-2" id="viewLoanChartBtn">View Larger Chart</button>
-            </div>
+          <div class="col-12 col-lg-4 mb-3">
+            <div class="p-2">Total Loans</div>
+            <div class="h5">{{ '%.2f'|format(total_loans or 0) }}</div>
+            <canvas style="height:125px;width: 100%;"></canvas>
           </div>
-        </div>
-      </div>
-
-      <!-- Insurance Section with Integrated Filters -->
-      <div class="row mt-3">
-        <div class="col-12 mb-3">
-          <div class="glass-card flex-fill">
-            <!-- Header with title + buttons -->
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h3 class="mb-0">Insurances Overview</h3>
-              <div class="d-flex gap-2 flex-wrap">
-                <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#insuranceFilters" aria-expanded="false" aria-controls="insuranceFilters">
-                  <i class="bi bi-funnel"></i> Filters
-                </button>
-                <button class="btn btn-sm btn-custom" type="button" data-bs-toggle="modal" data-bs-target="#insuranceFullModal">More Info</button>
-                <button class="btn btn-sm btn-custom" type="button" data-bs-toggle="modal" data-bs-target="#insuranceModal">Add Insurance</button>
-              </div>
-            </div>
-
-            <!-- Collapsible Filter Section -->
-            <div class="collapse mb-3" id="insuranceFilters">
-              <div class="card card-body">
-                <h6 class="mb-3">Filter Insurances</h6>
-                <form method="get" action="{{ url_for('dashboard.dashboard') }}">
-                  <div class="row">
-                    <div class="col-6 mb-2">
-                      <label class="form-label"><strong>Providers:</strong></label>
-                      <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="providerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                          Select Providers
-                        </button>
-                        <ul class="dropdown-menu p-2" aria-labelledby="providerDropdown" style="max-height: 200px; overflow-y: auto;">
-                          {% for provider in providers %}
-                          <li>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" name="insurance_provider" value="{{ provider }}"
-                                id="provider_{{ loop.index }}"
-                                {% if provider in selected_insurance_providers %}checked{% endif %}>
-                              <label class="form-check-label" for="provider_{{ loop.index }}">{{ provider }}</label>
-                            </div>
-                          </li>
-                          {% endfor %}
-                        </ul>
-                      </div>
-                    </div>
-
-                    <div class="col-6 mb-2">
-                      <label class="form-label"><strong>Policy Types:</strong></label>
-                      <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="policyDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                          Select Policy Types
-                        </button>
-                        <ul class="dropdown-menu p-2" aria-labelledby="policyDropdown" style="max-height: 200px; overflow-y: auto;">
-                          {% for policy in POLICY_TYPES %}
-                          <li>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" name="insurance_type" value="{{ policy }}"
-                                id="policy_{{ loop.index }}"
-                                {% if policy in selected_insurance_types %}checked{% endif %}>
-                              <label class="form-check-label" for="policy_{{ loop.index }}">{{ policy }}</label>
-                            </div>
-                          </li>
-                          {% endfor %}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-6 mb-2">
-                      <label class="form-label"><strong>Start Date:</strong></label>
-                      <input type="date" class="form-control" name="start_date" value="{{ start_date }}">
-                    </div>
-                    <div class="col-6 mb-2">
-                      <label class="form-label"><strong>End Date:</strong></label>
-                      <input type="date" class="form-control" name="end_date" value="{{ end_date }}">
-                    </div>
-                  </div>
-
-                  <!-- Preserve other filters -->
-                  {% for category in selected_expense_categories %}
-                    <input type="hidden" name="expense_category" value="{{ category }}">
-                  {% endfor %}
-                  {% for lender in selected_loan_lenders %}
-                    <input type="hidden" name="loan_lender" value="{{ lender }}">
-                  {% endfor %}
-                  {% for category in selected_loan_categories %}
-                    <input type="hidden" name="loan_category" value="{{ category }}">
-                  {% endfor %}
-
-                  <div class="mt-2">
-                    <button type="submit" class="btn btn-sm btn-custom">Apply</button>
-                    <a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-sm btn-secondary">Reset</a>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            <!-- Single Large Chart -->
-            <div style="min-height: 450px;">
-              <h5 class="mb-3">Insurance Premiums</h5>
-              <canvas id="insuranceChart" style="height:400px; width:100%; cursor:pointer;"></canvas>
-              <button class="btn btn-sm btn-outline-primary mt-2" id="viewInsuranceChartBtn">View Larger Chart</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="chartDetailModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Chart</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body"></div>
-        </div>
-      </div>
-    </div>
-      <!-- Fullscreen overviews for each section  -->
-      <div class="modal fade glass-overlay" id="expenseFullModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-          <div class="modal-content bg-transparent border-0 shadow-none">
-            <div class="modal-body">
-              <div class="overlay-card mx-auto">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="mb-0">All Expenses</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                {% if expenses %}
-                <div class="table-responsive">
-                  <table class="table table-dark table-striped table-hover align-middle">
-                  <thead><tr>
-                    <th>Date</th>
-                    <th>Category</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                  </tr></thead>
-                  <tbody>
-                  {% for e in expenses %}
-                    <tr>
-                      <td>{{ e.date.strftime('%Y-%m-%d') if e.date else '' }}</td>
-                      <td>{{ e.category.name if e.category else '' }}</td>
-                      <td>{{ e.description or '' }}</td>
-                      <td>{{ '%.2f'|format(e.amount) }}</td>
-                    </tr>
-                  {% endfor %}
-                  <tr class="fw-bold">
-                    <td colspan="3">Total</td>
-                    <td>{{ '%.2f'|format(expenses|sum(attribute='amount')) }}</td>
-                  </tr>
-                  </tbody>
-                  </table>
-                </div>
-                {% else %}
-                  <p class="text-muted mb-0">No expenses to show.</p>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade glass-overlay" id="loanFullModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-          <div class="modal-content bg-transparent border-0 shadow-none">
-            <div class="modal-body">
-              <div class="overlay-card mx-auto">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="mb-0">All Loans</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                {% if loans %}
-                <div class="table-responsive">
-                  <table class="table table-dark table-striped table-hover align-middle">
-                  <thead><tr>
-                    <th>Lender</th>
-                    <th>Amount</th>
-                    <th>Interest %</th>
-                    <th>Due Date</th>
-                  </tr></thead>
-                  <tbody>
-                  {% for l in loans %}
-                    <tr>
-                      <td>{{ l.lender }}</td>
-                      <td>{{ '%.2f'|format(l.interest_rate or 0) }}</td>
-                      <td>{{ l.due_date.strftime('%Y-%m-%d') if l.due_date else '' }}</td>
-                      <td>{{ '%.2f'|format(l.amount) }}</td>
-                    </tr>
-                  {% endfor %}
-                  <tr class="fw-bold total-row">
-                    <td colspan="3">Total</td>     
-                    <td>{{ '%.2f'|format(loans|sum(attribute='amount')) }}</td>             
-                  </tr>
-                  </tbody>
-                  </table>
-                </div>
-                {% else %}
-                  <p class="text-muted mb-0">No loans to show.</p>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade glass-overlay" id="insuranceFullModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-          <div class="modal-content bg-transparent border-0 shadow-none">
-            <div class="modal-body">
-              <div class="overlay-card mx-auto">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="mb-0">All Insurances</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                {% if insurances %}
-                <div class="table-responsive">
-                  <table class="table table-dark table-striped table-hover align-middle">
-                  <thead><tr>
-                    <th>Provider</th>
-                    <th>Policy</th>
-                    <th>Premium</th>
-                    <th>Renewal</th>
-                  </tr></thead>
-                  <tbody>
-                  {% for i in insurances %}
-                    <tr>
-                      <td>{{ i.provider }}</td>
-                      <td>{{ i.policy_type }}</td>
-                      <td>{{ '%.2f'|format(i.premium) }}</td>
-                      <td>{{ i.renewal_date.strftime('%Y-%m-%d') if i.renewal_date else '' }}</td>
-                    </tr>
-                  {% endfor %}
-                  <tr class="fw-bold">
-                    <td colspan="3">Total</td>
-                    <td>{{ '%.2f'|format(insurances|sum(attribute='premium')) }}</td>
-                  </tr>
-                  </tbody>
-                  </table>
-                </div>
-                {% else %}
-                  <p class="text-muted mb-0">No insurances to show.</p>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Centered, scrollable modals with improved styling  -->
-      <div class="modal fade" id="expenseModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Add Expense</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form method="post" action="{{ url_for('dashboard.add_expense') }}">
-                <div class="mb-3 position-relative">
-                  <label class="form-label">Amount</label>
-                  <input class="form-control numeric-input" type="number" name="amount" step="0.01" min="0" required placeholder="Enter amount" pattern="[0-9]+(\.[0-9]{1,2})?">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Date</label>
-                  <input class="form-control" type="date" name="date">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Category</label>
-                  <select class="form-select" name="category_id">
-                    <option value="">-- Select --</option>
-                    {% for c in categories %}
-                    <option value="{{ c.category_id }}">{{ c.name }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Description</label>
-                  <input class="form-control" type="text" name="description" maxlength="200" placeholder="Brief description of expense">
-                </div>
-                <div class="d-grid">
-                  <button class="btn btn-custom" type="submit">Save Expense</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="loanModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Add Loan</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form method="post" action="{{ url_for('dashboard.add_loan') }}">
-                <div class="mb-3">
-                  <label class="form-label">Lender</label>
-                  <select class="form-select" name="lender" required>
-                    <option value="">-- Select --</option>
-                    {% for lender in lenders %}
-                    <option value="{{ lender }}">{{ lender }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-                <div class="mb-3 position-relative">
-                  <label class="form-label">Amount</label>
-                  <input class="form-control numeric-input" type="number" name="amount" step="0.01" min="0" required placeholder="Enter loan amount" pattern="[0-9]+(\.[0-9]{1,2})?">
-                </div>
-                <div class="mb-3 position-relative">
-                  <label class="form-label">Interest Rate (%)</label>
-                  <input class="form-control numeric-input" type="number" name="interest_rate" step="0.01" min="0" placeholder="Enter interest rate" pattern="[0-9]+(\.[0-9]{1,2})?">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Due Date</label>
-                  <input class="form-control" type="date" name="due_date">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Category</label>
-                  <select class="form-select" name="loan_category" required>
-                    <option value="">-- Select --</option>
-                    {% for c in loan_categories %}
-                      <option value="{{ c }}">{{ c }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-                <div class="d-grid">
-                  <button class="btn btn-custom" type="submit">Save Loan</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="insuranceModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Add Insurance</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form method="post" action="{{ url_for('dashboard.add_insurance') }}">
-                <div class="mb-3">
-                  <label class="form-label">Provider</label>
-                  <select class="form-select" name="provider" required>
-                      <option value="" disabled selected>Select provider</option>
-                      {% for provider in providers %}
-                          <option value="{{ provider }}">{{ provider }}</option>
-                      {% endfor %}
-                  </select>
-              </div>
-
-              <div class="mb-3">
-                  <label class="form-label">Policy Type</label>
-                  <select class="form-select" name="policy_type" required>
-                      <option value="" disabled selected>Select policy type</option>
-                      {% for policy in POLICY_TYPES %}
-                          <option value="{{ policy }}">{{ policy }}</option>
-                      {% endfor %}
-                  </select>
-              </div>
-                <div class="mb-3 position-relative">
-                  <label class="form-label">Premium</label>
-                  <input class="form-control numeric-input" type="number" name="premium" step="0.01" min="0" required placeholder="Enter premium amount" pattern="[0-9]+(\.[0-9]{1,2})?">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Renewal Date</label>
-                  <input class="form-control" type="date" name="renewal_date">
-                </div>
-                <div class="d-grid">
-                  <button class="btn btn-custom" type="submit">Save Insurance</button>
-                </div>
-              </form>
-            </div>
+          <div class="col-12 col-lg-4 mb-3">
+            <div class="p-2">Monthly Premiums</div>
+            <div class="h5" style="width:100%;">{{ '%.2f'|format(total_premium or 0) }}</div>
+            <canvas style="height:125px;width: 100%;"></canvas>
           </div>
         </div>
       </div>
     </div>
-  
-  <div class="modal fade" id="chartDetailModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content bg-dark text-white">
-      <div class="modal-header">
-        <h5 class="modal-title">Chart</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <canvas id="modalChart" style="width:100%; height:500px;"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
-  
+
+    {# import component macros #}
+    {% import "components/modal.html" as Modal %}
+    {% import "components/dropdown.html" as Dropdown %}
+    {% import "components/table.html" as Table %}
+    {% import "components/form.html" as Forms %}
+
+    {# ========== EXPENSES MODAL ========== #}
+    {% set expense_header_buttons %}
+      <button class="btn btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#expenseFilterModal">Filter</button>
+      <button class="btn btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#expenseFullModal">More Info</button>
+      <button class="btn btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#expenseModal">Add</button>
+    {% endset %}
+
+    {{ Modal.render_modal(
+        "expensesModal",
+        "Expenses Overview",
+        '<canvas id="expenseChart" style="height:350px; width:100%;"></canvas>',
+        "lg",
+        expense_header_buttons
+    ) }}
+
+    {# Expense Filter Modal (uses Dropdown.multiselect) #}
+    {% set expense_filter_body %}
+      <form method="get" action="{{ url_for('dashboard.dashboard') }}">
+        {{ Dropdown.multiselect("Categories", DEFAULT_CATEGORIES, "expense_category", selected_expense_categories, "cat") }}
+        <div class="row">
+          <div class="col-6 mb-2">
+            <label class="form-label"><strong>Start Date</strong></label>
+            <input type="date" class="form-control" name="start_date" value="{{ start_date }}">
+          </div>
+          <div class="col-6 mb-2">
+            <label class="form-label"><strong>End Date</strong></label>
+            <input type="date" class="form-control" name="end_date" value="{{ end_date }}">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-custom mt-2">Apply</button>
+      </form>
+    {% endset %}
+
+    {{ Modal.render_modal("expenseFilterModal", "Filter Expenses", expense_filter_body, "md", "", False, "expensesModal") }}
+
+    {# Expense Full Modal (table). We need to pre-format rows similarly to original template. #}
+    {% set expense_rows = [] %}
+    {% for e in expenses %}
+      {% set _ = expense_rows.append([
+           (e.date.strftime('%Y-%m-%d') if e.date else ''),
+           (e.category.name if e.category else ''),
+           (e.description or ''),
+           ('%.2f'|format(e.amount))
+      ]) %}
+    {% endfor %}
+    {{ Table.full_table_modal("expenseFullModal", "expensesModal", "All Expenses",
+         ["Date","Category","Description","Amount"], expense_rows,
+         '%.2f'|format(expenses|sum(attribute='amount'))) }}
+
+    {# Expense Add Modal - use form macro #}
+    {{ Modal.render_modal("expenseModal", "Add Expense", Forms.expense_form(categories, url_for('dashboard.add_expense')), "lg", "", False, "expensesModal") }}
+
+
+    {# ========== LOANS MODAL ========== #}
+    {% set loan_header_buttons %}
+      <button class="btn btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#loanFilterModal">Filter</button>
+      <button class="btn btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#loanFullModal">More Info</button>
+      <button class="btn btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#loanModal">Add</button>
+    {% endset %}
+
+    {{ Modal.render_modal("loansModal", "Loans Overview", '<canvas id="loanChart" style="height:400px; width:100%; cursor:pointer;"></canvas>', "lg", loan_header_buttons) }}
+
+    {# Loan Filter Modal #}
+    {% set loan_filter_body %}
+      <form method="get" action="{{ url_for('dashboard.dashboard') }}">
+        {{ Dropdown.multiselect("Lenders", lenders, "loan_lender", selected_loan_lenders, "lender") }}
+        {{ Dropdown.multiselect("Loan Categories", loan_categories, "loan_category", selected_loan_categories, "loancat") }}
+        <div class="row">
+          <div class="col-6 mb-2">
+            <label class="form-label"><strong>Start Date</strong></label>
+            <input type="date" class="form-control" name="start_date" value="{{ start_date }}">
+          </div>
+          <div class="col-6 mb-2">
+            <label class="form-label"><strong>End Date</strong></label>
+            <input type="date" class="form-control" name="end_date" value="{{ end_date }}">
+          </div>
+        </div>
+        <button class="btn btn-custom mt-2" type="submit">Apply</button>
+      </form>
+    {% endset %}
+
+    {{ Modal.render_modal("loanFilterModal", "Filter Loans", loan_filter_body, "md", "", False, "loansModal") }}
+
+    {# Loan Full Modal (table) #}
+    {% set loan_rows = [] %}
+    {% for l in loans %}
+      {% set _ = loan_rows.append([
+          (l.lender or ''),
+          ('%.2f'|format(l.amount)),
+          ('%.2f'|format(l.interest_rate or 0)),
+          (l.due_date.strftime('%Y-%m-%d') if l.due_date else '')
+      ]) %}
+    {% endfor %}
+    {{ Table.full_table_modal("loanFullModal", "loansModal", "All Loans", ["Lender","Amount","Interest %","Due Date"], loan_rows, '%.2f'|format(loans|sum(attribute='amount'))) }}
+
+    {# Loan Add Modal #}
+    {{ Modal.render_modal("loanModal", "Add Loan", Forms.loan_form(lenders, loan_categories, url_for('dashboard.add_loan')), "lg", "", False, "loansModal") }}
+
+
+    {# ========== INSURANCE MODAL ========== #}
+    {% set insurance_header_buttons %}
+      <button class="btn btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#insuranceFilterModal">Filter</button>
+      <button class="btn btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#insuranceFullModal">More Info</button>
+      <button class="btn btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#insuranceModalAdd">Add</button>
+    {% endset %}
+
+    {{ Modal.render_modal("insuranceModal", "Insurance Overview", '<canvas id="insuranceChart" style="height:400px; width:100%; cursor:pointer;"></canvas>', "lg", insurance_header_buttons) }}
+
+    {# Insurance Filter Modal #}
+    {% set insurance_filter_body %}
+      <form method="get" action="{{ url_for('dashboard.dashboard') }}">
+        {{ Dropdown.multiselect("Providers", providers, "insurance_provider", selected_insurance_providers, "provider") }}
+        {{ Dropdown.multiselect("Policy Types", POLICY_TYPES, "policy_type", selected_policy_types, "policy") }}
+        <div class="row">
+          <div class="col-6 mb-2">
+            <label class="form-label"><strong>Start Date</strong></label>
+            <input type="date" class="form-control" name="start_date" value="{{ start_date }}">
+          </div>
+          <div class="col-6 mb-2">
+            <label class="form-label"><strong>End Date</strong></label>
+            <input type="date" class="form-control" name="end_date" value="{{ end_date }}">
+          </div>
+        </div>
+        <button class="btn btn-custom mt-2" type="submit">Apply</button>
+      </form>
+    {% endset %}
+
+    {{ Modal.render_modal("insuranceFilterModal", "Filter Insurance", insurance_filter_body, "md", "", False, "insuranceModal") }}
+
+    {# Insurance Full Modal (table) #}
+    {% set insurance_rows = [] %}
+    {% for ins in insurances %}
+      {% set _ = insurance_rows.append([
+          (ins.provider or ''),
+          (ins.policy_type or ''),
+          ('%.2f'|format(ins.premium)),
+          (ins.renewal_date.strftime('%Y-%m-%d') if ins.renewal_date else '')
+      ]) %}
+    {% endfor %}
+    {{ Table.full_table_modal("insuranceFullModal", "insuranceModal", "All Insurance Policies",
+         ["Provider","Policy Type","Premium","Renewal Date"], insurance_rows, '%.2f'|format(insurances|sum(attribute='premium'))) }}
+
+    {# Insurance Add Modal #}
+    {{ Modal.render_modal("insuranceModalAdd", "Add Insurance", Forms.insurance_form(providers, POLICY_TYPES, url_for('dashboard.add_insurance')), "lg", "", False, "insuranceModal") }}
+
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="text/javascript">
+    <script>
       window.dashboardData = {
-      expenseData: {{ expense_chart_data | tojson | safe }},
-      loanData: {{ loan_chart_data | tojson | safe }},
-      insuranceData: {{ insurance_chart_data | tojson | safe }},
-      categoryData: {{ category_chart_data | tojson | safe }}
-    };
+        expenseData: {{ expense_chart_data | tojson | safe }},
+        loanData: {{ loan_chart_data | tojson | safe }},
+        insuranceData: {{ insurance_chart_data | tojson | safe }},
+        categoryData: {{ category_chart_data | tojson | safe }}
+      };
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
   </body>

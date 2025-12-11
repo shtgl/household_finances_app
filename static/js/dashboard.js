@@ -134,3 +134,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
   updateScrollbar();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".modal").forEach(modal => {
+
+    modal.addEventListener("hidden.bs.modal", function () {
+
+      const returnTo = modal.getAttribute("data-return");
+
+      if (!returnTo) return; // ignore modals with no return target
+
+      // prevent infinite loop if graph modal is already open
+      const alreadyOpen = document.getElementById(returnTo).classList.contains("show");
+      if (alreadyOpen) return;
+
+      setTimeout(() => {
+        const modalObj = new bootstrap.Modal(document.getElementById(returnTo));
+        modalObj.show();
+      }, 200); // slight delay for smooth animation
+    });
+
+  });
+});

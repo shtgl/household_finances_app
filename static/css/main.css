@@ -1,0 +1,112 @@
+:root {
+  --bg-color: #DDE6EF;
+  --text-color: #323232;
+  --card-radius: 12px;
+  --card-shadow: rgba(42, 42, 42, 0.147);
+}
+
+.btn-custom,
+.btn-sm.btn-custom,
+button[data-bs-toggle="modal"] {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    position: relative;
+    border-radius: var(--card-radius);
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 8px 8px;
+    min-height: 24px;
+    color: #757575;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: auto;
+    min-width: 24px;
+}
+
+/* Hover effects */
+.btn-custom:hover,
+.btn-sm.btn-custom:hover,
+button[data-bs-toggle="modal"]:hover,
+.btn[type="submit"]:hover {
+    background: rgba(244, 244, 244, 1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Active/pressed state */
+.btn-custom:active,
+.btn-sm.btn-custom:active,
+button[data-bs-toggle="modal"]:active,
+.btn[type="submit"]:active {
+    box-shadow: 0 4px 12px var(--card-shadow);
+}
+
+
+/* Small button variations */
+.btn-sm.btn-custom {
+    font-size: 13px;
+    padding: 6px 8px;
+    justify-content: center;
+    justify-content: center;
+    min-height: 24px;
+    background-color: rgba(230, 230, 230, 0.75);
+    border-radius: var(--card-radius);
+}
+
+/* Submit button specific styles */
+.btn[type="submit"] {
+    background-color: rgba(255, 255, 255, 0.75);
+    color: #757575;
+    width: fit-content;
+    min-width: 80px;
+    padding: 8px 8px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: 600;
+}
+
+.btn[type="submit"]:hover {
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Close button specific styles */
+.btn-close {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border-radius: var(--card-radius);
+    background: rgba(255, 255, 255, 0.2);
+    position: relative;
+    min-height: auto;
+    color: #dc35469f;
+    transition: all 0.3s ease;
+}
+
+.btn-close:hover {
+    color: #dc3545;
+}
+
+.btn-close::before {
+    content: '×';
+    color: inherit;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btn-group-custom {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+

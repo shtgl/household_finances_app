@@ -7,7 +7,7 @@ load_dotenv()
 class DefaultConfig:
     # Reference the single instances
 
-    SQLALCHEMY_DB = os.environ.get('DATABASE_URL') or 'postgresql://postgres:password@localhost/finance_db'
+    SQLALCHEMY_DB = os.environ.get('DATABASE_URL') or 'postgresql://postgres:data@localhost/finance_db'
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'your-secret-key'
     SQLALCHEMY_TM = False
     

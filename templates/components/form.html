@@ -1,0 +1,115 @@
+{% macro expense_form(categories, submit_url) %}
+<form method="post" action="{{ submit_url }}">
+  <div class="mb-3 position-relative">
+    <label class="form-label">Amount</label>
+    <input class="form-control numeric-input" type="number" name="amount" step="0.01" min="0" required placeholder="Enter amount" pattern="[0-9]+(\.[0-9]{1,2})?">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Date</label>
+    <input class="form-control" type="date" name="date">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Category</label>
+    <select class="form-select" name="category_id">
+      <option value="">-- Select --</option>
+      {% for c in categories %}
+        <option value="{{ c.category_id }}">{{ c.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    <input class="form-control" type="text" name="description" maxlength="200" placeholder="Brief description of expense">
+  </div>
+
+  <div class="d-grid">
+    <button class="btn btn-custom" type="submit">Save Expense</button>
+  </div>
+</form>
+{% endmacro %}
+
+
+{% macro loan_form(lenders, loan_categories, submit_url) %}
+<form method="post" action="{{ submit_url }}">
+  <div class="mb-3">
+    <label class="form-label">Lender</label>
+    <select class="form-select" name="lender" required>
+      <option value="">-- Select --</option>
+      {% for lender in lenders %}
+      <option value="{{ lender }}">{{ lender }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Amount</label>
+    <input type="number" class="form-control numeric-input" name="amount" step="0.01" min="0" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Interest Rate (%)</label>
+    <input type="number" class="form-control numeric-input" name="interest_rate" step="0.01" min="0">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Due Date</label>
+    <input type="date" class="form-control" name="due_date">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Category</label>
+    <select class="form-select" name="loan_category" required>
+      <option value="">-- Select --</option>
+      {% for c in loan_categories %}
+      <option value="{{ c }}">{{ c }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="d-grid">
+    <button class="btn btn-custom" type="submit">Save Loan</button>
+  </div>
+</form>
+{% endmacro %}
+
+
+{% macro insurance_form(providers, policy_types, submit_url) %}
+<form method="post" action="{{ submit_url }}">
+  <div class="mb-3">
+    <label class="form-label">Provider</label>
+    <select class="form-select" name="provider" required>
+      <option value="">-- Select Provider --</option>
+      {% for provider in providers %}
+        <option value="{{ provider }}">{{ provider }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Policy Type</label>
+    <select class="form-select" name="policy_type" required>
+      <option value="">-- Select Policy Type --</option>
+      {% for policy in policy_types %}
+        <option value="{{ policy }}">{{ policy }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Premium</label>
+    <input type="number" class="form-control numeric-input" name="premium" step="0.01" min="0" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Renewal Date</label>
+    <input type="date" class="form-control" name="renewal_date">
+  </div>
+
+  <div class="d-grid">
+    <button class="btn btn-custom" type="submit">Save Insurance</button>
+  </div>
+</form>
+{% endmacro %}

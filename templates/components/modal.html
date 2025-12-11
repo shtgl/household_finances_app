@@ -1,0 +1,28 @@
+{% macro render_modal(id, title, body, size="lg", extra_header_html="", transparent=False, data_return=None) %}
+<div class="modal fade {% if transparent %}glass-overlay{% endif %}" id="{{ id }}" tabindex="-1"
+     {% if data_return %}data-return="{{ data_return }}"{% endif %} aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-{{ size }}">
+    <div class="modal-content {% if transparent %}bg-transparent border-0 shadow-none{% endif %}">
+      {# header - keep same structure as original: title + optional header buttons + close #}
+      <div class="modal-header d-flex align-items-center {% if transparent %}pb-0{% endif %}">
+        <h5 class="modal-title flex-grow-1">{{ title }}</h5>
+
+        {% if extra_header_html %}
+          <div class="d-flex gap-2 ms-auto">
+            {{ extra_header_html | safe }}
+          </div>
+        {% endif %}
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        {{ body | safe }}
+      </div>
+
+      {# keep original behaviour: some modals had no footer (full-table ones) while forms had buttons inside body.
+         We do not force a footer here to keep parity with original markup. #}
+    </div>
+  </div>
+</div>
+{% endmacro %}
