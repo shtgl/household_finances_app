@@ -265,4 +265,7 @@ python app.py
 <li>https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model</li>
 <li>https://developer.mozilla.org/en-US/docs/Web/API/Document</li>
 <li>https://developer.mozilla.org/en-US/docs/Web/API/Element</li>
+<li>https://developer.mozilla.org/en-US/docs/Web/API</li>
+<li>https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly/left</li>
+<li>https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/clientX</li>
 </ul>
